@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TokenLord Admin — Secret Page</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+:root{--bg:#0a0a0f;--surface:#13131a;--surface2:#1c1c28;--border:#2a2a3d;--accent:#7c5cfc;--accent2:#a78bfa;--green:#22c55e;--red:#ef4444;--yellow:#f59e0b;--blue:#3b82f6;--text:#f0f0ff;--muted:#8b8ba7;--radius:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;min-height:100vh}
+nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--border);background:rgba(10,10,15,.95);position:sticky;top:0;z-index:100}
+.logo{font-family:'Space Mono',monospace;font-size:16px;font-weight:700;color:var(--accent2)}
+.logo span{color:var(--text)}
+.admin-badge{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:var(--red);font-size:11px;padding:4px 12px;border-radius:20px;font-weight:600}
+.wpill{font-size:12px;color:var(--muted);background:var(--surface);border:1px solid var(--border);padding:5px 12px;border-radius:20px;cursor:pointer}
+.wpill b{color:var(--green)}
+.wrap{max-width:680px;margin:0 auto;padding:24px 20px 60px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.ctitle{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.ctitle::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);display:block}
+label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:5px}
+input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:13px;outline:none;margin-bottom:12px;transition:border-color .15s}
+input:focus{border-color:var(--accent)}
+input::placeholder{color:var(--muted)}
+.btn{width:100%;padding:12px;border-radius:10px;border:none;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:4px}
+.btn-p{background:var(--accent);color:#fff}
+.btn-p:hover:not(:disabled){opacity:.9;transform:translateY(-1px)}
+.btn-p:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-g{background:var(--green);color:#000;font-weight:700}
+.btn-y{background:var(--yellow);color:#000;font-weight:700}
+.btn-sm{width:auto;padding:6px 14px;font-size:12px;border-radius:8px;margin-top:0;display:inline-block}
+.st{padding:11px 14px;border-radius:8px;font-size:13px;margin-top:10px;line-height:1.5;display:none;white-space:pre-line}
+.st.show{display:block}
+.st.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:var(--green)}
+.st.err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:var(--red)}
+.st.inf{background:rgba(124,92,252,.1);border:1px solid rgba(124,92,252,.3);color:var(--accent2)}
+.st.warn{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:var(--yellow)}
+.row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+.row:last-child{border-bottom:none}
+.rl{color:var(--muted)}.rv{font-family:'Space Mono',monospace;font-weight:600;font-size:12px}
+.rv.g{color:var(--green)}.rv.b{color:var(--blue)}.rv.y{color:var(--yellow)}.rv.r{color:var(--red)}
+.fee-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.fee-opt{border:1px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;transition:all .15s;text-align:center}
+.fee-opt:hover{border-color:var(--accent2)}
+.fee-opt.selected{border-color:var(--accent);background:rgba(124,92,252,.1)}
+.fee-eth{font-family:'Space Mono',monospace;font-size:15px;font-weight:700;color:var(--text);margin-bottom:2px}
+.fee-usd{font-size:11px;color:var(--muted)}
+.fee-tag{font-size:10px;margin-top:4px;padding:2px 6px;border-radius:10px;display:inline-block;font-weight:600}
+.t-blue{background:rgba(59,130,246,.2);color:var(--blue)}
+.t-green{background:rgba(34,197,94,.2);color:var(--green)}
+.t-yellow{background:rgba(245,158,11,.2);color:var(--yellow)}
+.t-red{background:rgba(239,68,68,.2);color:var(--red)}
+.owner-ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:var(--green);font-size:12px;padding:8px 12px;border-radius:8px;margin-bottom:12px}
+.owner-no{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:var(--red);font-size:12px;padding:8px 12px;border-radius:8px;margin-bottom:12px}
+.tok-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:12px}
+.tok-item:last-child{border-bottom:none}
+.tok-ic{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.spin{display:inline-block;width:12px;height:12px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;margin-right:6px;vertical-align:middle}
+@keyframes sp{to{transform:rotate(360deg)}}
+.big-num{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:var(--green)}
+.big-label{font-size:12px;color:var(--muted);margin-top:4px}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:4px}
+.stat-box{background:var(--surface2);border-radius:10px;padding:14px;text-align:center}
+footer{text-align:center;padding:20px;color:var(--muted);font-size:12px;border-top:1px solid var(--border);margin-top:20px}
+a{color:var(--accent2)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Token<span>Lord</span> <span style="color:var(--red);font-size:12px">Admin</span></div>
+  <div class="admin-badge">SECRET ADMIN PAGE</div>
+  <div class="wpill" id="wpill" onclick="doConnect()">Connect Wallet</div>
+</nav>
+
+<div class="wrap">
+
+  <!-- CONNECT -->
+  <div class="card" id="connectCard">
+    <div class="ctitle">Connect your owner wallet</div>
+    <div class="st inf show" id="s0">This page is only for you — the factory owner. Connect your MetaMask wallet to access admin controls.</div>
+    <button class="btn btn-p" id="connBtn" onclick="doConnect()">Connect MetaMask</button>
+    <div id="connOk" style="display:none;margin-top:12px">
+      <div class="row"><span class="rl">Connected as</span><span class="rv b" id="d-addr">—</span></div>
+      <div class="row"><span class="rl">Network</span><span class="rv g" id="d-net">—</span></div>
+      <div class="row"><span class="rl">ETH Balance</span><span class="rv g" id="d-bal">—</span></div>
+    </div>
+  </div>
+
+  <!-- FACTORY LOADER -->
+  <div class="card">
+    <div class="ctitle">Your factory contract</div>
+    <label>Factory Address</label>
+    <input id="factIn" placeholder="0x..." oninput="chkAddr()" value="0x751db37649Fcb51F84865f1B24396F0d7E775452">
+    <div class="st" id="sLoad"></div>
+    <button class="btn btn-p" id="loadBtn" onclick="loadFactory()">Load Factory</button>
+  </div>
+
+  <!-- DASHBOARD (hidden until loaded) -->
+  <div id="dashboard" style="display:none">
+
+    <!-- STATS -->
+    <div class="card">
+      <div class="ctitle">Your earnings dashboard</div>
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="big-num" id="dash-bal">—</div>
+          <div class="big-label">ETH to withdraw</div>
+        </div>
+        <div class="stat-box">
+          <div class="big-num" id="dash-cnt" style="color:var(--blue)">—</div>
+          <div class="big-label">Tokens created</div>
+        </div>
+        <div class="stat-box">
+          <div class="big-num" id="dash-fee" style="color:var(--yellow)">—</div>
+          <div class="big-label">Current fee</div>
+        </div>
+      </div>
+      <div class="row" style="margin-top:10px"><span class="rl">Total ETH ever earned</span><span class="rv g" id="dash-total">—</span></div>
+      <div class="row"><span class="rl">Factory address</span><span class="rv b" id="dash-addr">—</span></div>
+      <div class="row"><span class="rl">Owner</span><span class="rv g" id="dash-owner">—</span></div>
+      <button class="btn btn-p btn-sm" style="margin-top:12px" onclick="loadDashboard()">Refresh</button>
+    </div>
+
+    <!-- WITHDRAW -->
+    <div class="card">
+      <div class="ctitle">Withdraw ETH to your wallet</div>
+      <div id="ownerCheck"></div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.6">
+        All ETH paid by token creators is sitting in your factory contract. Click below to sweep it all to your wallet in one click.
+      </div>
+      <button class="btn btn-g" id="wdBtn" onclick="doWithdraw()">Withdraw All ETH to My Wallet</button>
+      <div class="st" id="sWd"></div>
+    </div>
+
+    <!-- FEE MANAGEMENT -->
+    <div class="card">
+      <div class="ctitle">Change creation fee</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:14px">
+        Current fee: <b style="color:var(--yellow)" id="curFeeLabel">loading...</b><br>
+        Select a new fee below — takes effect immediately for all new token creations.
+      </div>
+
+      <div class="fee-grid">
+        <div class="fee-opt" onclick="pickFee('0.001',this)">
+          <div class="fee-eth">0.001 ETH</div>
+          <div class="fee-usd">~$2.50</div>
+          <div class="fee-tag t-blue">Testnet / Free</div>
+        </div>
+        <div class="fee-opt" onclick="pickFee('0.005',this)">
+          <div class="fee-eth">0.005 ETH</div>
+          <div class="fee-usd">~$12.50</div>
+          <div class="fee-tag t-green">Launch price</div>
+        </div>
+        <div class="fee-opt" onclick="pickFee('0.01',this)">
+          <div class="fee-eth">0.01 ETH</div>
+          <div class="fee-usd">~$25</div>
+          <div class="fee-tag t-yellow">Standard</div>
+        </div>
+        <div class="fee-opt" onclick="pickFee('0.02',this)">
+          <div class="fee-eth">0.02 ETH</div>
+          <div class="fee-usd">~$50</div>
+          <div class="fee-tag t-red">Premium</div>
+        </div>
+      </div>
+
+      <label>Custom fee (ETH)</label>
+      <input type="number" id="customFee" placeholder="e.g. 0.015" step="0.001" min="0" oninput="customInput()">
+
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:13px">
+          <span style="color:var(--muted)">New fee</span>
+          <span style="color:var(--text);font-family:'Space Mono',monospace;font-weight:700" id="newFeeShow">— not selected</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px">
+          <span style="color:var(--muted)">Monthly earnings (50 tokens)</span>
+          <span style="color:var(--green);font-family:'Space Mono',monospace;font-weight:700" id="earningsPreview">—</span>
+        </div>
+      </div>
+
+      <button class="btn btn-y" id="setFeeBtn" disabled onclick="doSetFee()">Update Fee on Blockchain</button>
+      <div class="st" id="sFee"></div>
+    </div>
+
+    <!-- ALL TOKENS -->
+    <div class="card">
+      <div class="ctitle" style="display:flex;justify-content:space-between;align-items:center">
+        <span>All tokens created through your factory</span>
+        <button class="btn btn-sm" onclick="loadAllTokens()" style="background:transparent;border:1px solid var(--border);color:var(--muted);cursor:pointer;border-radius:8px;padding:4px 10px;font-size:11px">Refresh</button>
+      </div>
+      <div id="allTokens"><div style="text-align:center;padding:16px;color:var(--muted);font-size:13px">Loading...</div></div>
+    </div>
+
+  </div><!-- end dashboard -->
+
+</div>
+
+<footer>TokenLord Admin · Only accessible by the factory owner · <a href="index.html">← Back to main site</a></footer>
+
+<script>
+const ABI=[
+  "function createToken(string,string,uint256) payable returns(address)",
+  "function getAllTokens() view returns(tuple(address tokenAddress,string name,string symbol,uint256 supply,address creator,uint256 createdAt)[])",
+  "function getTokenCount() view returns(uint256)",
+  "function creationFee() view returns(uint256)",
+  "function withdraw() external",
+  "function getBalance() view returns(uint256)",
+  "function owner() view returns(address)",
+  "function setFee(uint256) external"
+];
+
+let provider,signer,factory,userAddr,selectedFee=null;
+
+function ss(id,msg,type){const el=document.getElementById(id);el.textContent=msg;el.className='st '+type+' show';}
+
+// ── CONNECT ───────────────────────────────────────
+async function doConnect(){
+  if(!window.ethereum){ss('s0','MetaMask not found. Open this page in Chrome with MetaMask installed.','err');return;}
+  try{const ac=await window.ethereum.request({method:'eth_accounts'});if(ac&&ac.length){await finish(ac[0]);return;}}catch(e){}
+  const btn=document.getElementById('connBtn');
+  btn.disabled=true;btn.innerHTML='<span class="spin"></span>Check MetaMask popup...';
+  ss('s0','MetaMask popup coming — click Connect inside it.','inf');
+  const t=setTimeout(()=>{btn.disabled=false;btn.textContent='Connect MetaMask';ss('s0','Timed out. Click the MetaMask fox icon in Chrome toolbar and approve the request, then try again.','warn');},15000);
+  try{
+    const ac=await window.ethereum.request({method:'eth_requestAccounts'});
+    clearTimeout(t);if(ac&&ac.length)await finish(ac[0]);
+  }catch(e){
+    clearTimeout(t);btn.disabled=false;btn.textContent='Connect MetaMask';
+    if(e.code===4001)ss('s0','You clicked Reject. Try again and click Connect inside MetaMask.','err');
+    else if(e.code===-32002)ss('s0','MetaMask has a pending request! Click the fox icon in Chrome toolbar to approve it.','warn');
+    else ss('s0','Error: '+e.message,'err');
+  }
+}
+
+async function finish(addr){
+  const btn=document.getElementById('connBtn');
+  try{
+    provider=new ethers.providers.Web3Provider(window.ethereum);
+    signer=provider.getSigner();userAddr=addr;
+    const net=await provider.getNetwork();
+    const isMain=net.chainId===1;
+    if(!isMain&&net.chainId!==11155111){
+      ss('s0','Wrong network! Switch MetaMask to Ethereum Mainnet or Sepolia Testnet.','err');
+      btn.disabled=false;btn.textContent='Connect MetaMask';return;
+    }
+    const bal=await provider.getBalance(addr);
+    const b=parseFloat(ethers.utils.formatEther(bal)).toFixed(4);
+    document.getElementById('wpill').innerHTML='<b>'+addr.slice(0,6)+'...'+addr.slice(-4)+'</b>';
+    document.getElementById('d-addr').textContent=addr.slice(0,6)+'...'+addr.slice(-4);
+    document.getElementById('d-net').textContent=(isMain?'Ethereum Mainnet':'Sepolia Testnet')+' ✓';
+    document.getElementById('d-bal').textContent=b+' ETH';
+    document.getElementById('connOk').style.display='block';
+    btn.style.display='none';
+    ss('s0','Connected! Now load your factory contract below.','ok');
+    // auto load if address already filled
+    const fa=document.getElementById('factIn').value.trim();
+    if(/^0x[0-9a-fA-F]{40}$/.test(fa)&&fa!=='0x751db37649Fcb51F84865f1B24396F0d7E775452')loadFactory();
+  }catch(e){btn.disabled=false;btn.textContent='Connect MetaMask';ss('s0','Error: '+e.message,'err');}
+}
+
+// ── FACTORY ───────────────────────────────────────
+function chkAddr(){
+  const v=document.getElementById('factIn').value.trim();
+  document.getElementById('loadBtn').disabled=!/^0x[0-9a-fA-F]{40}$/.test(v);
+}
+
+async function loadFactory(){
+  if(!signer){ss('sLoad','Connect your wallet first','err');return;}
+  const addr=document.getElementById('factIn').value.trim();
+  if(!/^0x[0-9a-fA-F]{40}$/.test(addr)){ss('sLoad','Enter a valid 42-character address starting with 0x','err');return;}
+  ss('sLoad','Loading factory...','inf');
+  try{
+    factory=new ethers.Contract(addr,ABI,signer);
+    const own=await factory.owner();
+    const isOwner=own.toLowerCase()===userAddr?.toLowerCase();
+    if(!isOwner){
+      ss('sLoad','⚠️ Warning: Your connected wallet is NOT the factory owner. You can view data but cannot withdraw or change fees.\n\nOwner address: '+own,'warn');
+    } else {
+      ss('sLoad','✅ Factory loaded! You are the owner — full access granted.','ok');
+    }
+    await loadDashboard();
+    document.getElementById('dashboard').style.display='block';
+  }catch(e){ss('sLoad','Could not load factory. Check the address is correct and you are on the right network.\nError: '+e.message,'err');}
+}
+
+async function loadDashboard(){
+  if(!factory)return;
+  try{
+    const fee=await factory.creationFee();
+    const cnt=await factory.getTokenCount();
+    const bal=await factory.getBalance();
+    const own=await factory.owner();
+    const fe=ethers.utils.formatEther(fee);
+    const balEth=ethers.utils.formatEther(bal);
+    const totalEarned=(parseFloat(fe)*cnt.toNumber()).toFixed(4);
+    const addr=factory.address;
+
+    document.getElementById('dash-bal').textContent=parseFloat(balEth).toFixed(4)+' ETH';
+    document.getElementById('dash-cnt').textContent=cnt.toString();
+    document.getElementById('dash-fee').textContent=fe;
+    document.getElementById('dash-total').textContent=totalEarned+' ETH';
+    document.getElementById('dash-addr').textContent=addr.slice(0,6)+'...'+addr.slice(-4);
+    document.getElementById('dash-owner').textContent=own.slice(0,6)+'...'+own.slice(-4);
+    document.getElementById('curFeeLabel').textContent=fe+' ETH (~$'+(parseFloat(fe)*2500).toFixed(0)+')';
+
+    const isOwner=own.toLowerCase()===userAddr?.toLowerCase();
+    const oc=document.getElementById('ownerCheck');
+    oc.className=isOwner?'owner-ok':'owner-no';
+    oc.textContent=isOwner?'✅ You are the owner — withdrawal enabled':'❌ Not the owner — withdrawal disabled';
+    document.getElementById('wdBtn').disabled=!isOwner||bal.eq(0);
+    if(bal.eq(0))document.getElementById('wdBtn').textContent='Nothing to withdraw yet';
+    else document.getElementById('wdBtn').textContent='Withdraw '+parseFloat(balEth).toFixed(4)+' ETH to My Wallet';
+    document.getElementById('setFeeBtn').disabled=!isOwner||!selectedFee;
+
+    loadAllTokens();
+  }catch(e){console.error(e);}
+}
+
+// ── WITHDRAW ──────────────────────────────────────
+async function doWithdraw(){
+  if(!factory)return;
+  const btn=document.getElementById('wdBtn');
+  btn.disabled=true;btn.innerHTML='<span class="spin"></span>Check MetaMask...';
+  ss('sWd','MetaMask popup coming — confirm to withdraw all ETH to your wallet.','inf');
+  try{
+    const tx=await factory.withdraw();
+    btn.innerHTML='<span class="spin"></span>Confirming on blockchain...';
+    ss('sWd','Transaction sent! Waiting for confirmation...\nTX: '+tx.hash.slice(0,14)+'...','inf');
+    await tx.wait();
+    ss('sWd','✅ ETH withdrawn successfully!\nCheck your MetaMask balance — it should be higher now.\nView TX: https://etherscan.io/tx/'+tx.hash,'ok');
+    btn.textContent='Withdraw All ETH to My Wallet';
+    await loadDashboard();
+  }catch(e){
+    btn.disabled=false;btn.textContent='Withdraw All ETH to My Wallet';
+    if(e.code===4001)ss('sWd','You cancelled.','err');
+    else ss('sWd','Error: '+e.message,'err');
+  }
+}
+
+// ── FEE ───────────────────────────────────────────
+function pickFee(val,el){
+  selectedFee=val;
+  document.getElementById('customFee').value='';
+  document.querySelectorAll('.fee-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  updatePreview(val);
+}
+
+function customInput(){
+  const v=document.getElementById('customFee').value;
+  if(v&&parseFloat(v)>0){
+    selectedFee=v;
+    document.querySelectorAll('.fee-opt').forEach(o=>o.classList.remove('selected'));
+    updatePreview(v);
+  }
+}
+
+function updatePreview(val){
+  const usd=(parseFloat(val)*2500).toFixed(2);
+  const mo=(parseFloat(val)*50).toFixed(4);
+  const moUsd=(parseFloat(val)*50*2500).toFixed(0);
+  document.getElementById('newFeeShow').textContent=val+' ETH (~$'+usd+')';
+  document.getElementById('earningsPreview').textContent=mo+' ETH (~$'+moUsd+'/month)';
+  document.getElementById('setFeeBtn').disabled=false;
+}
+
+async function doSetFee(){
+  if(!factory||!selectedFee)return;
+  try{
+    const own=await factory.owner();
+    if(own.toLowerCase()!==userAddr?.toLowerCase()){ss('sFee','Only the factory owner can change the fee.','err');return;}
+  }catch(e){ss('sFee','Error checking ownership: '+e.message,'err');return;}
+  const btn=document.getElementById('setFeeBtn');
+  btn.disabled=true;btn.innerHTML='<span class="spin"></span>Check MetaMask...';
+  ss('sFee','MetaMask popup coming — confirm to update the fee on the blockchain.','inf');
+  try{
+    const wei=ethers.utils.parseEther(selectedFee);
+    const tx=await factory.setFee(wei);
+    btn.innerHTML='<span class="spin"></span>Confirming...';
+    ss('sFee','Transaction sent! Updating fee...','inf');
+    await tx.wait();
+    const newFee=await factory.creationFee();
+    const fe=ethers.utils.formatEther(newFee);
+    document.getElementById('curFeeLabel').textContent=fe+' ETH (~$'+(parseFloat(fe)*2500).toFixed(0)+')';
+    document.getElementById('dash-fee').textContent=fe;
+    ss('sFee','✅ Fee updated to '+fe+' ETH!\n\nAll new token creations now cost '+fe+' ETH.\nExisting tokens are not affected.','ok');
+    btn.textContent='Update Fee on Blockchain';
+    btn.disabled=false;
+  }catch(e){
+    btn.disabled=false;btn.textContent='Update Fee on Blockchain';
+    if(e.code===4001)ss('sFee','You cancelled.','err');
+    else ss('sFee','Error: '+e.message,'err');
+  }
+}
+
+// ── ALL TOKENS ────────────────────────────────────
+async function loadAllTokens(){
+  if(!factory)return;
+  const el=document.getElementById('allTokens');
+  el.innerHTML='<div style="text-align:center;padding:12px;color:var(--muted);font-size:13px"><span class="spin"></span> Loading...</div>';
+  try{
+    const toks=await factory.getAllTokens();
+    if(!toks.length){el.innerHTML='<div style="text-align:center;padding:16px;color:var(--muted);font-size:13px">No tokens created yet.</div>';return;}
+    const isMain=(await provider.getNetwork()).chainId===1;
+    const base=isMain?'https://etherscan.io':'https://sepolia.etherscan.io';
+    const cols=[['rgba(124,92,252,.2)','#a78bfa'],['rgba(34,197,94,.2)','#22c55e'],['rgba(59,130,246,.2)','#3b82f6'],['rgba(245,158,11,.2)','#f59e0b']];
+    el.innerHTML='<div style="font-size:12px;color:var(--muted);margin-bottom:8px">'+toks.length+' tokens total — each one earned you a fee</div>'+
+    [...toks].reverse().map((t,i)=>{
+      const c=cols[i%cols.length];
+      const date=new Date(t.createdAt.toNumber()*1000).toLocaleDateString();
+      return`<div class="tok-item">
+        <div class="tok-ic" style="background:${c[0]};color:${c[1]}">${t.name[0]}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:600;font-size:13px">${t.name} <span style="font-family:monospace;font-size:10px;color:var(--muted)">${t.symbol}</span></div>
+          <div style="font-family:monospace;font-size:10px;color:var(--muted)">${t.tokenAddress.slice(0,10)}...${t.tokenAddress.slice(-4)}</div>
+          <a href="${base}/token/${t.tokenAddress}" target="_blank" style="font-size:11px">Etherscan →</a>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-size:12px;font-weight:600">${Number(t.supply).toLocaleString()}</div>
+          <div style="font-size:10px;color:var(--muted)">${date}</div>
+          <div style="font-size:10px;color:var(--muted)">${t.creator.slice(0,6)}...${t.creator.slice(-4)}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){el.innerHTML='<div style="color:var(--red);font-size:13px;padding:8px">Error: '+e.message+'</div>';}
+}
+
+// ── INIT ──────────────────────────────────────────
+window.addEventListener('load',async()=>{
+  chkAddr();
+  if(window.ethereum){
+    try{const ac=await window.ethereum.request({method:'eth_accounts'});if(ac&&ac.length)await finish(ac[0]);}catch(e){}
+    window.ethereum.on('accountsChanged',()=>location.reload());
+    window.ethereum.on('chainChanged',()=>location.reload());
+  }
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+</body>
+</html>
