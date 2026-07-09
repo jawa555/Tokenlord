@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TokenLord — Launch Your Crypto Token in 60 Seconds</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+:root{--bg:#0a0a0f;--surface:#13131a;--surface2:#1c1c28;--border:#2a2a3d;--accent:#7c5cfc;--accent2:#a78bfa;--green:#22c55e;--red:#ef4444;--yellow:#f59e0b;--blue:#3b82f6;--text:#f0f0ff;--muted:#8b8ba7;--radius:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;min-height:100vh}
+nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--border);background:rgba(10,10,15,.95);position:sticky;top:0;z-index:100}
+.logo{font-family:'Space Mono',monospace;font-size:18px;font-weight:700;color:var(--accent2)}
+.logo span{color:var(--text)}
+.nav-fee{font-size:12px;color:var(--muted);background:var(--surface);border:1px solid var(--border);padding:5px 14px;border-radius:20px}
+.nav-fee b{color:var(--green)}
+.wpill{font-size:12px;color:var(--muted);background:var(--surface);border:1px solid var(--border);padding:5px 12px;border-radius:20px;cursor:pointer}
+.wpill b{color:var(--green)}
+.hero{text-align:center;padding:60px 24px 40px;position:relative}
+.hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(124,92,252,.15) 0%,transparent 70%);pointer-events:none}
+.hero-badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent2);background:rgba(124,92,252,.12);border:1px solid rgba(124,92,252,.3);padding:5px 14px;border-radius:20px;margin-bottom:20px}
+h1{font-size:clamp(28px,5vw,52px);font-weight:700;line-height:1.1;letter-spacing:-1px;margin-bottom:14px}
+h1 em{font-style:normal;background:linear-gradient(135deg,var(--accent2),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:15px;color:var(--muted);max-width:440px;margin:0 auto 28px;line-height:1.6}
+.hero-stats{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
+.stat{text-align:center}
+.stat-val{font-family:'Space Mono',monospace;font-size:20px;font-weight:700;color:var(--green);display:block}
+.stat-lbl{font-size:11px;color:var(--muted);margin-top:2px}
+.main{max-width:960px;margin:0 auto;padding:0 20px 60px;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+@media(max-width:680px){.main{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.ctitle{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.ctitle::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);display:block}
+label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:5px}
+input,select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:13px;outline:none;margin-bottom:12px;transition:border-color .15s}
+input:focus{border-color:var(--accent)}
+input::placeholder{color:var(--muted)}
+.btn{width:100%;padding:12px;border-radius:10px;border:none;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:4px}
+.btn-p{background:linear-gradient(135deg,var(--accent),#5b3fd4);color:#fff}
+.btn-p:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 24px rgba(124,92,252,.3)}
+.btn-p:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.st{padding:11px 14px;border-radius:8px;font-size:13px;margin-top:10px;line-height:1.5;display:none;white-space:pre-line}
+.st.show{display:block}
+.st.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:var(--green)}
+.st.err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:var(--red)}
+.st.inf{background:rgba(124,92,252,.1);border:1px solid rgba(124,92,252,.3);color:var(--accent2)}
+.row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+.row:last-child{border-bottom:none}
+.rl{color:var(--muted)}.rv{font-family:'Space Mono',monospace;font-weight:600;font-size:12px}
+.rv.g{color:var(--green)}.rv.b{color:var(--blue)}.rv.y{color:var(--yellow)}
+.tog-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border)}
+.tog-row:last-child{border-bottom:none}
+.tn{font-size:13px;font-weight:500}.td{font-size:11px;color:var(--muted);margin-top:2px}
+.tog{position:relative;width:38px;height:21px;flex-shrink:0}
+.tog input{opacity:0;width:0;height:0}
+.tog .sl{position:absolute;inset:0;background:var(--surface2);border:1px solid var(--border);border-radius:21px;cursor:pointer;transition:.2s}
+.tog .sl::before{content:'';position:absolute;width:15px;height:15px;left:2px;top:2px;background:var(--muted);border-radius:50%;transition:.2s}
+.tog input:checked+.sl{background:var(--accent);border-color:var(--accent)}
+.tog input:checked+.sl::before{transform:translateX(17px);background:#fff}
+.tok-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:12px}
+.tok-item:last-child{border-bottom:none}
+.tok-ic{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.how-step{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
+.how-step:last-child{border-bottom:none}
+.how-num{width:24px;height:24px;border-radius:50%;background:rgba(124,92,252,.15);border:1px solid rgba(124,92,252,.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--accent2);flex-shrink:0;margin-top:1px}
+.how-title{font-weight:600;margin-bottom:2px}
+.how-desc{font-size:12px;color:var(--muted);line-height:1.5}
+.spin{display:inline-block;width:12px;height:12px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;margin-right:6px;vertical-align:middle}
+@keyframes sp{to{transform:rotate(360deg)}}
+footer{text-align:center;padding:24px;color:var(--muted);font-size:12px;border-top:1px solid var(--border)}
+a{color:var(--accent2)}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">Token<span>Lord</span></div>
+  <div class="nav-fee">Fee: <b id="navFee">0.01 ETH</b></div>
+  <div class="wpill" id="wpill" onclick="connectWallet()">Connect Wallet</div>
+</nav>
+<div class="hero">
+  <div class="hero-badge">Built on Ethereum · No coding needed</div>
+  <h1>Launch your own<br><em>crypto token</em><br>in 60 seconds</h1>
+  <p class="hero-sub">Fill a simple form. Pay a small fee. Your token appears in your wallet instantly.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-val" id="totalTokens">0</span><div class="stat-lbl">Tokens created</div></div>
+    <div class="stat"><span class="stat-val">~60s</span><div class="stat-lbl">Time to launch</div></div>
+    <div class="stat"><span class="stat-val" id="liveFee">0.01 ETH</span><div class="stat-lbl">Flat fee</div></div>
+  </div>
+</div>
+<div class="main">
+  <div>
+    <div class="card">
+      <div class="ctitle">Create your token</div>
+      <label>Token Name</label>
+      <input id="tname" placeholder="e.g. Priya Coin" maxlength="32">
+      <label>Token Symbol</label>
+      <input id="tsym" placeholder="e.g. PRIYA" maxlength="8" oninput="this.value=this.value.toUpperCase()">
+      <label>Total Supply</label>
+      <input type="number" id="tsup" value="1000000" min="1">
+      <div style="margin-bottom:12px">
+        <label style="margin-bottom:10px">Features</label>
+        <div class="tog-row">
+          <div><div class="tn">Burnable</div><div class="td">Holders can destroy their tokens</div></div>
+          <label class="tog"><input type="checkbox" checked><span class="sl"></span></label>
+        </div>
+        <div class="tog-row">
+          <div><div class="tn">Mintable</div><div class="td">You can create more tokens later</div></div>
+          <label class="tog"><input type="checkbox"><span class="sl"></span></label>
+        </div>
+      </div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:13px;color:var(--muted);margin-bottom:12px">
+        Fee: <b style="color:var(--yellow)" id="feeDisplay">0.01 ETH (~$25)</b> · Tokens go to your wallet instantly
+      </div>
+      <button class="btn btn-p" id="mainBtn" onclick="connectWallet()">Connect Wallet to Launch</button>
+      <div class="st" id="mainStatus"></div>
+    </div>
+    <div class="card">
+      <div class="ctitle">How it works</div>
+      <div class="how-step"><div class="how-num">1</div><div><div class="how-title">Fill the form</div><div class="how-desc">Enter name, symbol, supply and pick features.</div></div></div>
+      <div class="how-step"><div class="how-num">2</div><div><div class="how-title">Pay small fee</div><div class="how-desc">MetaMask pops up. Confirm the creation fee. One time only.</div></div></div>
+      <div class="how-step"><div class="how-num">3</div><div><div class="how-title">Token in your wallet</div><div class="how-desc">In ~15 seconds all tokens land in your wallet. You own 100%.</div></div></div>
+      <div class="how-step"><div class="how-num">4</div><div><div class="how-title">List on Uniswap</div><div class="how-desc">Add ETH liquidity so others can buy your token.</div></div></div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <div class="ctitle">Wallet</div>
+      <div class="row"><span class="rl">Status</span><span class="rv" id="wStatus" style="color:var(--red)">Not connected</span></div>
+      <div class="row" id="wAddrRow" style="display:none"><span class="rl">Address</span><span class="rv b" id="wAddr">—</span></div>
+      <div class="row" id="wBalRow" style="display:none"><span class="rl">ETH Balance</span><span class="rv g" id="wBal">—</span></div>
+      <div class="row" id="wNetRow" style="display:none"><span class="rl">Network</span><span class="rv g" id="wNet">—</span></div>
+    </div>
+    <div class="card">
+      <div class="ctitle" style="display:flex;justify-content:space-between;align-items:center">
+        <span>Recently created tokens</span>
+        <button onclick="loadTokens()" style="width:auto;padding:3px 10px;font-size:11px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer">Refresh</button>
+      </div>
+      <div id="tokensList"><div style="text-align:center;padding:20px;color:var(--muted);font-size:13px">Connect wallet to see tokens</div></div>
+    </div>
+    <div class="card">
+      <div class="ctitle">Platform stats</div>
+      <div class="row"><span class="rl">Total tokens launched</span><span class="rv g" id="s-cnt">—</span></div>
+      <div class="row"><span class="rl">Current creation fee</span><span class="rv y" id="s-fee">—</span></div>
+      <div class="row"><span class="rl">Network</span><span class="rv b">Ethereum Mainnet</span></div>
+    </div>
+  </div>
+</div>
+<footer>TokenLord · Built on Ethereum Mainnet · Every launch earns the creator ETH</footer>
+<script>
+const FACTORY_ADDRESS="0x751db37649Fcb51F84865f1B24396F0d7E775452";
+const ABI=["function createToken(string,string,uint256) payable returns(address)","function getAllTokens() view returns(tuple(address tokenAddress,string name,string symbol,uint256 supply,address creator,uint256 createdAt)[])","function getTokenCount() view returns(uint256)","function creationFee() view returns(uint256)","function getBalance() view returns(uint256)"];
+let provider,signer,factory,userAddr,connected=false;
+function ss(id,msg,type){const el=document.getElementById(id);el.textContent=msg;el.className='st '+type+' show';}
+async function connectWallet(){
+  if(!window.ethereum){ss('mainStatus','Please install MetaMask from metamask.io','err');return;}
+  try{const ac=await window.ethereum.request({method:'eth_accounts'});if(ac&&ac.length){await finishConnect(ac[0]);return;}}catch(e){}
+  try{
+    document.getElementById('wpill').textContent='Connecting...';
+    const ac=await window.ethereum.request({method:'eth_requestAccounts'});
+    if(ac&&ac.length)await finishConnect(ac[0]);
+  }catch(e){
+    document.getElementById('wpill').textContent='Connect Wallet';
+    if(e.code===4001)ss('mainStatus','Rejected. Please try again and click Connect inside MetaMask.','err');
+    else if(e.code===-32002)ss('mainStatus','MetaMask has a pending request — click the fox icon in Chrome toolbar.','inf');
+    else ss('mainStatus','Error: '+e.message,'err');
+  }
+}
+async function finishConnect(addr){
+  try{
+    provider=new ethers.providers.Web3Provider(window.ethereum);
+    signer=provider.getSigner();userAddr=addr;
+    const net=await provider.getNetwork();
+    if(net.chainId!==1){
+      ss('mainStatus','Wrong network! Switch MetaMask to Ethereum Mainnet.','err');
+      document.getElementById('wpill').textContent='Wrong Network';
+      try{await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:'0x1'}]});setTimeout(()=>finishConnect(addr),500);}catch(e2){}
+      return;
+    }
+    const bal=await provider.getBalance(addr);
+    const b=parseFloat(ethers.utils.formatEther(bal)).toFixed(4);
+    connected=true;
+    document.getElementById('wpill').innerHTML='<b>'+addr.slice(0,6)+'...'+addr.slice(-4)+'</b>';
+    document.getElementById('wStatus').textContent='Connected ✓';document.getElementById('wStatus').style.color='var(--green)';
+    document.getElementById('wAddrRow').style.display='flex';document.getElementById('wAddr').textContent=addr.slice(0,6)+'...'+addr.slice(-4);
+    document.getElementById('wBalRow').style.display='flex';document.getElementById('wBal').textContent=b+' ETH';
+    document.getElementById('wNetRow').style.display='flex';document.getElementById('wNet').textContent='Ethereum Mainnet ✓';
+    document.getElementById('mainBtn').textContent='Launch Token — 0.01 ETH';
+    document.getElementById('mainBtn').onclick=createToken;
+    if(FACTORY_ADDRESS!=='YOUR_FACTORY_ADDRESS_HERE'){
+      factory=new ethers.Contract(FACTORY_ADDRESS,ABI,signer);
+      const fee=await factory.creationFee();const cnt=await factory.getTokenCount();
+      const fe=ethers.utils.formatEther(fee);const usd=(parseFloat(fe)*2500).toFixed(0);
+      document.getElementById('feeDisplay').textContent=fe+' ETH (~$'+usd+')';
+      document.getElementById('navFee').textContent=fe+' ETH';document.getElementById('liveFee').textContent=fe+' ETH';
+      document.getElementById('totalTokens').textContent=cnt.toString();
+      document.getElementById('s-cnt').textContent=cnt.toString();document.getElementById('s-fee').textContent=fe+' ETH (~$'+usd+')';
+      document.getElementById('mainBtn').textContent='Launch Token — '+fe+' ETH';
+      loadTokens();
+    }
+  }catch(e){ss('mainStatus','Error: '+e.message,'err');}
+}
+async function createToken(){
+  if(!connected){await connectWallet();return;}
+  if(FACTORY_ADDRESS==='YOUR_FACTORY_ADDRESS_HERE'){ss('mainStatus','Add your factory address to the code first.','err');return;}
+  const name=document.getElementById('tname').value.trim();
+  const sym=document.getElementById('tsym').value.trim();
+  const sup=parseInt(document.getElementById('tsup').value);
+  if(!name){ss('mainStatus','Enter a token name','err');return;}
+  if(!sym){ss('mainStatus','Enter a token symbol','err');return;}
+  if(!sup){ss('mainStatus','Enter a valid supply','err');return;}
+  const btn=document.getElementById('mainBtn');
+  btn.disabled=true;btn.innerHTML='<span class="spin"></span>Check MetaMask...';
+  ss('mainStatus','MetaMask popup coming — click Confirm to create your token on Ethereum Mainnet.','inf');
+  try{
+    const fee=await factory.creationFee();
+    const tx=await factory.createToken(name,sym,sup,{value:fee});
+    btn.innerHTML='<span class="spin"></span>Confirming on Ethereum (~30 sec)...';
+    ss('mainStatus','Transaction sent!\nTX: '+tx.hash.slice(0,14)+'...\nWaiting for Ethereum to confirm...','inf');
+    const rc=await tx.wait();
+    const ta=rc.logs&&rc.logs[0]?rc.logs[0].address:'see Etherscan';
+    ss('mainStatus','✅ Token launched on Ethereum!\n\nName: '+name+' ('+sym+')\nSupply: '+sup.toLocaleString()+'\nAddress: '+ta+'\n\nView: https://etherscan.io/token/'+ta+'\n\nAdd this address to MetaMask to see your tokens!','ok');
+    btn.textContent='Launch Another Token';btn.disabled=false;loadTokens();
+  }catch(e){
+    btn.disabled=false;btn.textContent='Launch Token — 0.01 ETH';
+    if(e.code===4001)ss('mainStatus','You cancelled. Try again.','err');
+    else ss('mainStatus','Error: '+e.message,'err');
+  }
+}
+async function loadTokens(){
+  if(!factory)return;
+  const el=document.getElementById('tokensList');
+  try{
+    const toks=await factory.getAllTokens();
+    if(!toks.length){el.innerHTML='<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px">No tokens yet — be the first!</div>';return;}
+    const cols=[['rgba(124,92,252,.2)','#a78bfa'],['rgba(34,197,94,.2)','#22c55e'],['rgba(59,130,246,.2)','#3b82f6'],['rgba(245,158,11,.2)','#f59e0b']];
+    el.innerHTML=[...toks].reverse().slice(0,5).map((t,i)=>{
+      const c=cols[i%cols.length];
+      return`<div class="tok-item"><div class="tok-ic" style="background:${c[0]};color:${c[1]}">${t.name[0]}</div><div style="flex:1;min-width:0"><div style="font-weight:600">${t.name}</div><a href="https://etherscan.io/token/${t.tokenAddress}" target="_blank" style="font-size:11px">Etherscan →</a></div><div style="text-align:right"><div style="font-size:11px;font-weight:600">${Number(t.supply).toLocaleString()}</div><div style="font-size:10px;color:var(--muted);font-family:monospace">${t.symbol}</div></div></div>`;
+    }).join('');
+  }catch(e){}
+}
+window.addEventListener('load',async()=>{
+  if(window.ethereum){
+    try{const ac=await window.ethereum.request({method:'eth_accounts'});if(ac&&ac.length)await finishConnect(ac[0]);}catch(e){}
+    window.ethereum.on('accountsChanged',()=>location.reload());
+    window.ethereum.on('chainChanged',()=>location.reload());
+  }
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+</body>
+</html>
