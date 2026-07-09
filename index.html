@@ -186,7 +186,7 @@ async function finishConnect(addr){
     document.getElementById('wNetRow').style.display='flex';document.getElementById('wNet').textContent='Ethereum Mainnet ✓';
     document.getElementById('mainBtn').textContent='Launch Token — 0.01 ETH';
     document.getElementById('mainBtn').onclick=createToken;
-    if(FACTORY_ADDRESS!=='0x751db37649Fcb51F84865f1B24396F0d7E775452'){
+    if(FACTORY_ADDRESS!=='YOUR_FACTORY_ADDRESS_HERE'){
       factory=new ethers.Contract(FACTORY_ADDRESS,ABI,signer);
       const fee=await factory.creationFee();const cnt=await factory.getTokenCount();
       const fe=ethers.utils.formatEther(fee);const usd=(parseFloat(fe)*2500).toFixed(0);
@@ -201,7 +201,7 @@ async function finishConnect(addr){
 }
 async function createToken(){
   if(!connected){await connectWallet();return;}
-  if(FACTORY_ADDRESS==='0x751db37649Fcb51F84865f1B24396F0d7E775452'){ss('mainStatus','Add your factory address to the code first.','err');return;}
+  if(FACTORY_ADDRESS==='YOUR_FACTORY_ADDRESS_HERE'){ss('mainStatus','Add your factory address to the code first.','err');return;}
   const name=document.getElementById('tname').value.trim();
   const sym=document.getElementById('tsym').value.trim();
   const sup=parseInt(document.getElementById('tsup').value);
